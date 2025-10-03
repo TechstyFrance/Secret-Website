@@ -1,0 +1,88 @@
+---
+layout: news
+title: News & Events
+description: Latest news and events from Green Valley College Foundation, Inc.
+---
+<link rel="stylesheet" href="/assets/css/news.css">
+
+<!-- News Feed Section -->
+<section data-bs-version="5.1" class="content3 cid-uXRGa4IEU3" id="content3-1m">
+    <div class="container">
+        <div class="news-header text-center mb-4">
+            <h2 class="news-title">News & Events</h2>
+            <p class="news-subtitle">Stay updated with the latest happenings</p>
+        </div>
+        <div class="news-feed">
+            {% for post in site.posts %}
+            <div class="post-card">
+                <div class="post-header">
+                    <div class="post-meta">
+                        <span class="post-date">{{ post.date | date: "%B %d, %Y" }}</span>
+                    </div>
+                    <h3 class="post-title">{{ post.title }}</h3>
+                </div>
+                
+                {% if post.image %}
+                <div class="post-image">
+                    <img src="{{ post.image }}" alt="{{ post.title }}">
+                </div>
+                {% endif %}
+                
+                <div class="post-content">
+                    <div class="post-excerpt" id="excerpt-{{ forloop.index }}">
+                        {{ post.excerpt | default: post.content | strip_html | truncate: 200 }}
+                    </div>
+                    <div class="post-full-content" id="full-{{ forloop.index }}" style="display: none;">
+                        {{ post.content }}
+                    </div>
+                    <button class="read-more-btn" onclick="toggleContent(this)" data-index="{{ forloop.index }}">
+                        Read More
+                    </button>
+                </div>
+                
+                <div class="post-actions">
+                    <div class="post-share-mini">
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ site.url }}{{ post.url }}" target="_blank" class="share-mini facebook" title="Share on Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://twitter.com/intent/tweet?url={{ site.url }}{{ post.url }}&text={{ post.title | url_encode }}" target="_blank" class="share-mini twitter" title="Share on Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://wa.me/?text={{ post.title | url_encode }}%20{{ site.url }}{{ post.url }}" target="_blank" class="share-mini whatsapp" title="Share on WhatsApp">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        {% if site.posts.size == 0 %}
+        <div class="row justify-content-center mt-5">
+            <div class="col-12 col-md-8 text-center">
+                <h4 class="mbr-section-title mbr-fonts-style display-4">No news posts yet</h4>
+                <p class="mbr-text mbr-fonts-style display-7">Check back soon for the latest updates from Green Valley College!</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+
+<script>
+function toggleContent(button) {
+    const index = button.getAttribute('data-index');
+    const excerpt = document.getElementById('excerpt-' + index);
+    const full = document.getElementById('full-' + index);
+    
+    if (full.style.display === 'none') {
+        excerpt.style.display = 'none';
+        full.style.display = 'block';
+        button.textContent = 'Show Less';
+    } else {
+        excerpt.style.display = 'block';
+        full.style.display = 'none';
+        button.textContent = 'Read More';
+    }
+}
+</script>

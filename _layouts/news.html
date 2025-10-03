@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Site made with Mobirise Website Builder v6.1.4, https://mobirise.com -->
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Mobirise v6.1.4, mobirise.com">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+  <link rel="shortcut icon" href="assets/images/school-seal-96x96.png" type="image/x-icon">
+  <meta name="description" content="">
+  
+  
+  <title>{{ page.title }} - {{ site.title }}</title>
+  <link rel="stylesheet" href="assets/web/assets/mobirise-icons2/mobirise2.css">
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/animatecss/animate.css">
+  <link rel="stylesheet" href="assets/dropdown/css/style.css">
+  <link rel="stylesheet" href="assets/socicon/css/styles.css">
+  <link rel="stylesheet" href="assets/theme/css/style.css">
+  <link rel="preload" href="https://fonts.googleapis.com/css?family=Inter+Tight:100,200,300,400,500,600,700,800,900,100i,200i,300i,400i,500i,600i,700i,800i,900i&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter+Tight:100,200,300,400,500,600,700,800,900,100i,200i,300i,400i,500i,600i,700i,800i,900i&display=swap"></noscript>
+  <link rel="preload" as="style" href="assets/mobirise/css/mbr-additional.css?v=KTcSgX"><link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css?v=KTcSgX" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  
+  
+  
+</head>
+<body>
+  {% include navbar-news.html %}
+  
+  <main>
+    {{ content }}
+  </main>
+  
+  {% include footer.html %}
+  
+  <script src="assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/smoothscroll/smooth-scroll.js"></script>
+  <script src="assets/ytplayer/index.js"></script>
+  <script src="assets/vimeoplayer/player.js"></script>
+  <script src="assets/dropdown/js/navbar-dropdown.js"></script>
+  <script src="assets/theme/js/script.js"></script>
+  <script>
+    // Initialize video background for home page
+    document.addEventListener('DOMContentLoaded', function() {
+        const videoSection = document.querySelector('[data-bg-video]');
+        if (videoSection) {
+            const videoSrc = videoSection.getAttribute('data-bg-video');
+            if (videoSrc) {
+                const video = document.createElement('video');
+                video.src = videoSrc;
+                video.autoplay = true;
+                video.muted = true;
+                video.loop = true;
+                video.playsinline = true;
+                video.style.position = 'absolute';
+                video.style.top = '0';
+                video.style.left = '0';
+                video.style.width = '100%';
+                video.style.height = '100%';
+                video.style.objectFit = 'cover';
+                video.style.zIndex = '-1';
+                
+                videoSection.style.position = 'relative';
+                videoSection.style.overflow = 'hidden';
+                videoSection.appendChild(video);
+            }
+        }
+    });
+  </script>
+  
+  <input name="animation" type="hidden">
+</body>
+</html>

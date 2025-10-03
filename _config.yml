@@ -1,0 +1,52 @@
+# Green Valley College Foundation, Inc. Website Configuration
+
+# Site settings
+title: "Green Valley College Foundation, Inc."
+email: "info@greenvalley.edu.ph"
+description: "Shaping Tomorrow Through Quality Education - Green Valley College Foundation, Inc."
+baseurl: ""
+url: "https://greenvalley.edu.ph"
+
+# Social media
+twitter_username: "greenvalleycollege"
+facebook_username: "greenvalleycollege"
+instagram_username: "greenvalleycollege"
+
+# Build settings
+theme: null  # We're using custom layouts
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+
+# Collections
+collections:
+  posts:
+    output: true
+    permalink: /:year/:month/:day/:title/
+  departments:
+    output: true
+    permalink: /departments/:name/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "default"
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules/
+  - vendor/
+  - .sass-cache/
+  - .jekyll-cache/
+  - .jekyll-metadata
+  - README.md

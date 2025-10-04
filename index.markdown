@@ -43,7 +43,7 @@ description: Green Valley College Foundation, Inc. - Shaping Tomorrow Through Qu
                         <h6 class="item-subtitle mbr-fonts-style mt-1 display-7"><strong>{{ post.title }}</strong></h6>
                         <p class="mbr-text mbr-fonts-style mt-3 display-7">{{ post.excerpt | strip_html | truncate: 150 }}</p>
                     </div>
-                    <div class="mbr-section-btn item-footer mt-2"><a href="{{ post.url }}" class="btn item-btn btn-primary-outline display-7">Read More &gt;</a></div>
+                    <div class="mbr-section-btn item-footer mt-2"><a href="/news" class="btn item-btn btn-primary-outline display-7">Read More &gt;</a></div>
                 </div>
             </div>
             {% endfor %}

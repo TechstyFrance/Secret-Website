@@ -3,86 +3,281 @@ layout: news
 title: News & Events
 description: Latest news and events from Green Valley College Foundation, Inc.
 ---
-<link rel="stylesheet" href="/assets/css/news.css">
 
-<!-- News Feed Section -->
-<section data-bs-version="5.1" class="content3 cid-uXRGa4IEU3" id="content3-1m">
-    <div class="container">
-        <div class="news-header text-center mb-4">
-            <h2 class="news-title">News & Events</h2>
-            <p class="news-subtitle">Stay updated with the latest happenings</p>
-        </div>
-        <div class="news-feed">
-            {% for post in site.posts %}
-            <div class="post-card">
-                <div class="post-header">
-                    <div class="post-meta">
-                        <span class="post-date">{{ post.date | date: "%B %d, %Y" }}</span>
-                    </div>
-                    <h3 class="post-title">{{ post.title }}</h3>
+<!-- Facebook-style News Feed -->
+<section class="facebook-news-section">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+                <div class="news-header text-center mb-4">
+                    <h2 class="news-title">News & Events</h2>
+                    <p class="news-subtitle">Stay updated with the latest happenings</p>
                 </div>
                 
-                {% if post.image %}
-                <div class="post-image">
-                    <img src="{{ post.image }}" alt="{{ post.title }}">
-                </div>
-                {% endif %}
-                
-                <div class="post-content">
-                    <div class="post-excerpt" id="excerpt-{{ forloop.index }}">
-                        {{ post.excerpt | default: post.content | strip_html | truncate: 200 }}
+                <div class="facebook-feed">
+                    {% for post in site.posts %}
+                    <div class="facebook-post" id="post-{{ post.date | date: '%Y-%m-%d' }}-{{ post.title | slugify }}">
+                        <div class="post-header">
+                            <div class="post-author">
+                                <div class="author-avatar">
+                                    <img src="assets/images/school-seal-96x96.png" alt="Green Valley College">
+                                </div>
+                                <div class="author-info">
+                                    <h4>Green Valley College Foundation</h4>
+                                    <span class="post-time">{{ post.date | date: "%B %d, %Y at %I:%M %p" }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="post-content">
+                            <p>{{ post.content | strip_html | truncate: 300 }}</p>
+                        </div>
+                        
+                        {% if post.image %}
+                        <div class="post-image">
+                            <img src="{{ post.image }}" alt="{{ post.title }}" onclick="openModal('{{ post.url }}', '{{ post.title }}', '{{ post.date | date: "%B %d, %Y" }}', '{{ post.image }}', '{{ post.content | strip_html }}')">
+                        </div>
+                        {% endif %}
+                        
+                        <div class="post-actions">
+                            <button class="action-btn read-more-btn" onclick="openModal('{{ post.url }}', '{{ post.title }}', '{{ post.date | date: "%B %d, %Y" }}', '{{ post.image }}', '{{ post.content | strip_html }}')">
+                                <i class="fas fa-book-open"></i> Read More
+                            </button>
+                            <button class="action-btn share-btn" onclick="sharePost('{{ post.url }}', '{{ post.title }}')">
+                                <i class="fas fa-share"></i> Share
+                            </button>
+                        </div>
                     </div>
-                    <div class="post-full-content" id="full-{{ forloop.index }}" style="display: none;">
-                        {{ post.content }}
+                    {% endfor %}
+                    
+                    {% if site.posts.size == 0 %}
+                    <div class="no-posts">
+                        <h4>No news posts yet</h4>
+                        <p>Check back soon for the latest updates from Green Valley College!</p>
                     </div>
-                    <button class="read-more-btn" onclick="toggleContent(this)" data-index="{{ forloop.index }}">
-                        Read More
-                    </button>
-                </div>
-                
-                <div class="post-actions">
-                    <div class="post-share-mini">
-                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ site.url }}{{ post.url }}" target="_blank" class="share-mini facebook" title="Share on Facebook">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="https://twitter.com/intent/tweet?url={{ site.url }}{{ post.url }}&text={{ post.title | url_encode }}" target="_blank" class="share-mini twitter" title="Share on Twitter">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="https://wa.me/?text={{ post.title | url_encode }}%20{{ site.url }}{{ post.url }}" target="_blank" class="share-mini whatsapp" title="Share on WhatsApp">
-                            <i class="fab fa-whatsapp"></i>
-                        </a>
-                    </div>
+                    {% endif %}
                 </div>
             </div>
-            {% endfor %}
         </div>
-        
-        {% if site.posts.size == 0 %}
-        <div class="row justify-content-center mt-5">
-            <div class="col-12 col-md-8 text-center">
-                <h4 class="mbr-section-title mbr-fonts-style display-4">No news posts yet</h4>
-                <p class="mbr-text mbr-fonts-style display-7">Check back soon for the latest updates from Green Valley College!</p>
-            </div>
-        </div>
-        {% endif %}
     </div>
 </section>
 
+<!-- Facebook-style Modal -->
+<div class="modal fade" id="postModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="post-author">
+                    <div class="author-avatar">
+                        <img src="assets/images/school-seal-96x96.png" alt="Green Valley College">
+                    </div>
+                    <div class="author-info">
+                        <h4>Green Valley College Foundation</h4>
+                        <span class="post-time" id="modalPostTime"></span>
+                    </div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <h3 id="modalPostTitle"></h3>
+                <div id="modalPostImage"></div>
+                <div id="modalPostContent"></div>
+            </div>
+            <div class="modal-footer">
+                <div class="post-actions">
+                    <button class="action-btn share-btn" onclick="sharePost('', '')">
+                        <i class="fas fa-share"></i> Share
+                    </button>
+                    <button class="action-btn like-btn">
+                        <i class="far fa-heart"></i> Like
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
-function toggleContent(button) {
-    const index = button.getAttribute('data-index');
-    const excerpt = document.getElementById('excerpt-' + index);
-    const full = document.getElementById('full-' + index);
+function openModal(url, title, date, image, content) {
+    document.getElementById('modalPostTitle').textContent = title;
+    document.getElementById('modalPostTime').textContent = date;
     
-    if (full.style.display === 'none') {
-        excerpt.style.display = 'none';
-        full.style.display = 'block';
-        button.textContent = 'Show Less';
+    const imageDiv = document.getElementById('modalPostImage');
+    if (image) {
+        imageDiv.innerHTML = `<img src="${image}" alt="${title}" class="img-fluid">`;
     } else {
-        excerpt.style.display = 'block';
-        full.style.display = 'none';
-        button.textContent = 'Read More';
+        imageDiv.innerHTML = '';
+    }
+    
+    document.getElementById('modalPostContent').innerHTML = content;
+    
+    const modal = new bootstrap.Modal(document.getElementById('postModal'));
+    modal.show();
+}
+
+function sharePost(url, title) {
+    const shareUrl = url || window.location.href;
+    const shareTitle = title || document.title;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: shareTitle,
+            url: shareUrl
+        });
+    } else {
+        // Fallback to copying URL
+        navigator.clipboard.writeText(shareUrl).then(() => {
+            alert('Link copied to clipboard!');
+        });
     }
 }
 </script>
+
+<style>
+.facebook-news-section {
+    background: #f0f2f5;
+    min-height: 100vh;
+    padding: 20px 0;
+}
+
+.facebook-feed {
+    max-width: 680px;
+    margin: 0 auto;
+}
+
+.facebook-post {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.post-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid #e4e6ea;
+}
+
+.post-author {
+    display: flex;
+    align-items: center;
+}
+
+.author-avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 12px;
+}
+
+.author-info h4 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1c1e21;
+}
+
+.post-time {
+    font-size: 13px;
+    color: #65676b;
+}
+
+.post-content {
+    padding: 12px 16px;
+    font-size: 15px;
+    line-height: 1.4;
+    color: #1c1e21;
+}
+
+.post-image img {
+    width: 100%;
+    height: auto;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.post-image img:hover {
+    opacity: 0.9;
+}
+
+.post-actions {
+    padding: 8px 16px;
+    border-top: 1px solid #e4e6ea;
+    display: flex;
+    gap: 8px;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.read-more-btn {
+    color: #1877f2;
+}
+
+.read-more-btn:hover {
+    background: #f0f2f5;
+}
+
+.share-btn {
+    color: #65676b;
+}
+
+.share-btn:hover {
+    background: #f0f2f5;
+}
+
+.like-btn {
+    color: #65676b;
+}
+
+.like-btn:hover {
+    background: #f0f2f5;
+}
+
+.no-posts {
+    text-align: center;
+    padding: 40px 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.modal-content {
+    border-radius: 8px;
+}
+
+.modal-header {
+    border-bottom: 1px solid #e4e6ea;
+    padding: 16px 20px;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-footer {
+    border-top: 1px solid #e4e6ea;
+    padding: 12px 20px;
+}
+
+@media (max-width: 768px) {
+    .facebook-feed {
+        margin: 0 10px;
+    }
+    
+    .post-actions {
+        flex-wrap: wrap;
+    }
+}
+</style>
